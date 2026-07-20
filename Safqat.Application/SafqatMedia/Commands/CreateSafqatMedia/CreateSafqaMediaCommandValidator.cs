@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Safqat.Application.SafqatMedia.Commands
+namespace Safqat.Application.SafqatMedia.Commands.CreateSafqatMedia
 {
     public sealed class CreateSafqaMediaCommandValidator: AbstractValidator<CreateSafqaMediaCommand>
     {

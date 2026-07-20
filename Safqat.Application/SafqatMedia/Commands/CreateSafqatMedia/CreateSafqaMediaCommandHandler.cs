@@ -2,7 +2,7 @@
 using Safqat.Application.Common.Interfaces;
 using Safqat.Domain.Models;
 
-namespace Safqat.Application.SafqatMedia.Commands
+namespace Safqat.Application.SafqatMedia.Commands.CreateSafqatMedia
 {
     public sealed class CreateSafqaMediaCommandHandler(IAppDbContext appDbContext): IRequestHandler<CreateSafqaMediaCommand, Guid>
     {
@@ -10,7 +10,7 @@ namespace Safqat.Application.SafqatMedia.Commands
         {
             var safqaMedia = new SafqaMedia(request.SafqaId, request.Key, request.Type);
 
-            await appDbContext.SafqaMedias.AddAsync(safqaMedia, cancellationToken);
+            await appDbContext.SafqatMedia.AddAsync(safqaMedia, cancellationToken);
 
             return safqaMedia.Id;
         }

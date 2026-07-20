@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Safqat.Application.Common.Interfaces;
 using Safqat.Domain.Models;
 
-namespace Safqat.Application.SafqatMedia.Queries
+namespace Safqat.Application.SafqatMedia.Queries.GetSafqaMedia
 {
     public sealed class GetSafqaMediaQueryHandler(IAppDbContext appDbContext): IRequestHandler<GetSafqaMediaQuery, IEnumerable<SafqaMedia>>
     {
