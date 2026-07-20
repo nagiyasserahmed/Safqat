@@ -1,0 +1,6 @@
+@Safqat.Api_HostAddress = http://localhost:5078
+
+GET {{Safqat.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

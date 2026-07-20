@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="Safqat.Api/Safqat.Api.csproj" />
+  <Project Path="Safqat.Application/Safqat.Application.csproj" />
+  <Project Path="Safqat.Domain/Safqat.Domain.csproj" />
+  <Project Path="Safqat.Infrastructure/Safqat.Infrastructure.csproj" Id="57d93433-34e1-4672-9fd7-d90f7ea97250" />
+</Solution>
