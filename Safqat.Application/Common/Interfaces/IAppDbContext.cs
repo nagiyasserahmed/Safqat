@@ -10,6 +10,7 @@ namespace Safqat.Application.Common.Interfaces
         DbSet<User> Users { get; }
         DbSet<Category> Categories { get; }
         DbSet<SafqaMedia> SafqatMedia { get; }
+        DbSet<RefreshToken> RefreshTokens { get; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 

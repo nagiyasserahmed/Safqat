@@ -11,9 +11,11 @@ namespace Safqat.Infrastructure.Data
 
         public DbSet<User> Users => Set<User>();
 
+        public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
+
         public DbSet<Category> Categories => Set<Category>();
 
-        public DbSet<SafqaMedia> SafqaMedias => Set<SafqaMedia>();
+        public DbSet<SafqaMedia> SafqatMedia => throw new NotImplementedException();
 
         public async Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default)
         {
