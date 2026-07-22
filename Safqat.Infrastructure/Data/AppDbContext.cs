@@ -34,13 +34,6 @@ namespace Safqat.Infrastructure.Data
                 .WithOne(m => m.Safqa)
                 .HasForeignKey(m => m.SafqaId)
                 .OnDelete(DeleteBehavior.Cascade);
-
-
-            modelBuilder.Entity<Category>()
-                .HasOne(c => c.ParentCategory)
-                .WithMany(c => c.SubCategories)
-                .HasForeignKey(c => c.ParentCategoryId)
-                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

@@ -17,14 +17,14 @@ namespace Safqat.Api.Controllers
         //    }
 
         //    // Step 1: user taps "create listing" — before filling anything in
-        //    [HttpPost]
-        //    public async Task<IActionResult> CreateDraft()
-        //    {
-        //        var userId = User.GetUserId(); // from auth
-        //        var safqa = Safqa.CreateDraft(Guid.NewGuid(), userId, categoryId: Guid.Empty);
-        //        await _repo.AddAsync(safqa);
-        //        return Ok(new { safqaId = safqa.Id });
-        //    }
+        //[HttpPost]
+        //public async Task<IActionResult> CreateDraft()
+        //{
+        //    var userId = User.GetUserId(); // from auth
+        //    var safqa = Safqa.CreateDraft(Guid.NewGuid(), userId, categoryId: Guid.Empty);
+        //    await _repo.AddAsync(safqa);
+        //    return Ok(new { safqaId = safqa.Id });
+        //}
 
         //    // Step 2: user fills the form, can call this repeatedly while editing
         //    [HttpPatch("{id}")]
