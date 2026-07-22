@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Safqat.Domain.Enums;
-using Safqat.Domain.Models;
 
 namespace Safqat.Api.Controllers
 {

@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Safqat.Application.Auth.DTOs;
-using Safqat.Domain.Models;
 
 namespace Safqat.Application.Auth.Commands.Register
 {

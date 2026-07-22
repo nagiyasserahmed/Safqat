@@ -17,9 +17,8 @@ namespace Safqat.Domain.Models
         public string PasswordHash { get; private set; } 
         public DateTime CreatedAt { get; private set; }
         public DateTime UpdatedAt { get; private set; }
-        public object UserName { get; set; }
 
-        public User(string FirstName, string LastName, string Email, string HashedPassword, string Phone, string Country, string City, string Region )
+        public User(string FirstName, string LastName, string Email, string PasswordHash, string Phone, string Country, string City, string Region )
         {
             Id = Guid.NewGuid();
 
@@ -37,8 +36,9 @@ namespace Safqat.Domain.Models
                 throw new ArgumentException("PhoneNumber cannot be null or empty.", nameof(Phone));
             }
 
-            if (!string.IsNullOrEmpty(Country)) {
-                throw new ArgumentException("Location cannot be null or empty.", nameof(Country));
+            if (string.IsNullOrWhiteSpace(Country))
+            {
+                throw new ArgumentException("Country cannot be null or empty.", nameof(Country));
             }
 
             this.FirstName = FirstName;
@@ -48,7 +48,7 @@ namespace Safqat.Domain.Models
             this.Country = Country;
             this.City = City;
             this.Region = Region;
-            this.PasswordHash = HashedPassword;
+            this.PasswordHash = PasswordHash;
 
             CreatedAt = DateTime.UtcNow;
             UpdatedAt = DateTime.UtcNow;
