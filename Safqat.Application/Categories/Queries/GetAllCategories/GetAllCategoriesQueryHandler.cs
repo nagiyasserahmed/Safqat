@@ -27,7 +27,6 @@ namespace Safqat.Application.Categories.Queries.GetAllCategories
                     Id = c.Id,
                     Name = c.Name,
                     Description = c.Description,
-                    Key = c.Key,
                     CreatedAt = c.CreatedAt
                 })
                 .ToListAsync(cancellationToken);

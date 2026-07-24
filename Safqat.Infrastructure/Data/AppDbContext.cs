@@ -34,6 +34,10 @@ namespace Safqat.Infrastructure.Data
                 .WithOne(m => m.Safqa)
                 .HasForeignKey(m => m.SafqaId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Safqa>()
+                .Property(s=>s.Price)
+                .HasColumnType("decimal(18,2)");
         }
     }
 }

@@ -1,43 +1,31 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Safqat.Application.Safqat.Commands.CreateDraftSafqa;
+using Safqat.Application.Safqat.Commands.UpdateDraftSafqa;
 
 namespace Safqat.Api.Controllers
 {
     [ApiController]
     [Route("safqat")]
-    public class SafqaController : ControllerBase
+    public class SafqaController(ISender mediator) : ControllerBase
     {
-        //    private readonly ISafqaRepository _repo;
-        //    private readonly IAmazonS3 _s3;
-        //    private const string Bucket = "safqat-media";
-
-        //    public SafqaController(ISafqaRepository repo, IAmazonS3 s3)
-        //    {
-        //        _repo = repo;
-        //        _s3 = s3;
-        //    }
-
-        //    // Step 1: user taps "create listing" — before filling anything in
-        //[HttpPost]
-        //public async Task<IActionResult> CreateDraft()
-        //{
-        //    var userId = User.GetUserId(); // from auth
-        //    var safqa = Safqa.CreateDraft(Guid.NewGuid(), userId, categoryId: Guid.Empty);
-        //    await _repo.AddAsync(safqa);
-        //    return Ok(new { safqaId = safqa.Id });
-        //}
-
-        //    // Step 2: user fills the form, can call this repeatedly while editing
-        //    [HttpPatch("{id}")]
-        //    public async Task<IActionResult> UpdateDraft(Guid id, [FromBody] UpdateSafqaRequest req)
-        //    {
-        //        var safqa = await _repo.GetAsync(id);
-        //        if (safqa is null) return NotFound();
-        //        if (safqa.PublisherId != User.GetUserId()) return Forbid();
-
-        //        safqa.UpdateDraft(req.Title, req.Description, req.Address, req.Price, req.IsNegotiable);
-        //        await _repo.SaveChangesAsync();
-        //        return NoContent();
-        //    }
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> CreateDraft([FromBody] CreateDraftSafqaCommand command, CancellationToken cancellationToken)
+        {
+            var safqaId = await mediator.Send(command, cancellationToken);
+            return Ok(safqaId);
+        }
+        
+        [HttpPatch]
+        [Authorize]
+        public async Task<IActionResult> UpdateDraft([FromBody] UpdateDraftSafqaCommand req)
+        {
+           var updatedSafqa = await mediator.Send(req);
+            
+            return Ok(updatedSafqa);
+        }
 
         //    // Step 3: user adds a photo — SafqaId already exists from step 1
         //    [HttpPost("{id}/media/presign")]
@@ -95,6 +83,7 @@ namespace Safqat.Api.Controllers
         //        {
         //            safqa.Publish();
         //        }
+
         //        catch (InvalidOperationException ex)
         //        {
         //            return BadRequest(new { error = ex.Message });

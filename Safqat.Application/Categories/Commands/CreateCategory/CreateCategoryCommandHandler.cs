@@ -24,7 +24,6 @@ namespace Safqat.Application.Categories.Commands.CreateCategory
                 Id = Guid.NewGuid(),
                 Name = request.Name,
                 Description = request.Description,
-                Key = request.Key,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             };

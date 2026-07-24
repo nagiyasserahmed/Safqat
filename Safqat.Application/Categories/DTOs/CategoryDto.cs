@@ -1,13 +1,10 @@
-﻿
-
-namespace Safqat.Application.Categories.DTOs
+﻿namespace Safqat.Application.Categories.DTOs
 {
     public sealed class CategoryDto
     {
         public Guid Id { get; init; }
         public string Name { get; init; } = string.Empty;
         public string Description { get; init; } = string.Empty;
-        public string Key { get; init; } = string.Empty;
         public DateTime CreatedAt { get; init; }
     }
 }

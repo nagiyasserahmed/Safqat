@@ -25,25 +25,44 @@ namespace Safqat.Domain.Models
 
         // Draft created immediately when the user starts a listing —
         // no title/price required yet
-        public static Safqa CreateDraft(Guid id, Guid publisherId, Guid categoryId)
+        public static Safqa CreateDraft(Guid id ,Guid publisherId, Guid categoryId)
         {
             return new Safqa
             {
                 Id = id,
-                PublisherId = publisherId,
                 CategoryId = categoryId,
+                PublisherId = publisherId,
                 Status = SafqaStatus.Draft
             };
         }
 
-        public void UpdateDraft(string title, string description, string address, decimal price, bool isNegotiable)
+        public void UpdateDraft(
+                    string? title = null,
+                    string? description = null,
+                    string? address = null,
+                    decimal? price = null,
+                    bool? isNegotiable = null)
         {
-            if (price < 0) throw new ArgumentException("Price cannot be negative.");
-            Title = title;
-            Description = description;
-            Address = address;
-            Price = price;
-            IsNegotiable = isNegotiable;
+            if (!string.IsNullOrWhiteSpace(title))
+                Title = title;
+
+            if (!string.IsNullOrWhiteSpace(description))
+                Description = description;
+
+            if (!string.IsNullOrWhiteSpace(address))
+                Address = address;
+
+            if (price.HasValue)
+            {
+                if (price.Value < 0)
+                    throw new ArgumentException("Price cannot be negative.");
+
+                Price = price.Value;
+            }
+
+            if (isNegotiable.HasValue)
+                IsNegotiable = isNegotiable.Value;
+
             UpdatedAt = DateTime.UtcNow;
         }
 
