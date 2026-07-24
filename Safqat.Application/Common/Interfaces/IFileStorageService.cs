@@ -7,10 +7,10 @@ namespace Safqat.Application.Common.Interfaces
 {
     public interface IFileStorageService
     {
-        Task<PresignedUploadResult> GenerateUploadUrlAsync(
-            string fileName,
-            string contentType,
-            CancellationToken cancellationToken = default);
+        Task<StorageUploadResult> GenerateUploadUrlAsync(
+        string key,
+        string contentType,
+        CancellationToken cancellationToken = default);
 
         Task<PresignedDownloadResult> GenerateDownloadUrlAsync(
             string key,

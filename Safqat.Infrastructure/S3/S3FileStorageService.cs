@@ -12,29 +12,19 @@ public class S3FileStorageService(
 {
     private readonly S3Settings _settings = options.Value;
 
-    public async Task<PresignedUploadResult> GenerateUploadUrlAsync(
-        string fileName,
-        string contentType,
-        CancellationToken cancellationToken = default)
+    public async Task<StorageUploadResult> GenerateUploadUrlAsync(
+    string key,
+    string contentType,
+    CancellationToken cancellationToken = default)
     {
-        var extension = Path.GetExtension(fileName);
+        var allowedTypes = new[] { "image/jpeg", "image/png", "image/webp" };
 
-        var allowedTypes = new[]
-        {
-            "image/jpeg",
-            "image/png",
-            "image/webp",
-        };
-
-        if (!allowedTypes.Contains(contentType))
+        if (!allowedTypes.Contains(contentType, StringComparer.OrdinalIgnoreCase))
         {
             throw new InvalidOperationException("Unsupported file type.");
         }
 
-        var key = $"safqat/{Guid.NewGuid()}{extension}";
-
-        var expiresAt = DateTime.UtcNow.AddMinutes(
-            _settings.PresignedUrlExpirationMinutes);
+        var expiresAt = DateTime.UtcNow.AddMinutes(_settings.PresignedUrlExpirationMinutes);
 
         var request = new GetPreSignedUrlRequest
         {
@@ -47,11 +37,7 @@ public class S3FileStorageService(
 
         var url = await s3.GetPreSignedURLAsync(request);
 
-        return new PresignedUploadResult(
-            key,
-            url,
-            "PUT",
-            expiresAt);
+        return new StorageUploadResult(url, expiresAt);
     }
 
     public async Task<PresignedDownloadResult> GenerateDownloadUrlAsync(

@@ -1,41 +1,60 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Safqat.Application.Auth.Interfaces;
+using Safqat.Application.Common.DTOs;
 using Safqat.Application.Common.Interfaces;
 using Safqat.Domain.Enums;
 using Safqat.Domain.Models;
 
-namespace Safqat.Application.Safqat.Commands.PresignMedia
+namespace Safqat.Application.Safqat.Commands.PresignMedia;
+
+public sealed class PresignMediaCommandHandler(
+    IAppDbContext appDbContext,
+    ICurrentUserService currentUserService,
+    IFileStorageService fileStorageService)
+    : IRequestHandler<PresignMediaCommand, PresignedUploadResult>
 {
-    public sealed class PresignMediaCommandHandler(IAppDbContext appDbContext, ICurrentUserService currentUserService, IFileStorageService fileStorageService) : IRequestHandler<PresignMediaCommand, SafqaMedia>
+    public async Task<PresignedUploadResult> Handle(
+        PresignMediaCommand request,
+        CancellationToken cancellationToken)
     {
-        public async Task<SafqaMedia> Handle(PresignMediaCommand request, CancellationToken cancellationToken)
-        {
-            var safqa = appDbContext.Safqat.FirstOrDefault(s=> s.Id == request.SafqaId);
-            var currentUserId = currentUserService.UserId;
+        var safqa = await appDbContext.Safqat
+            .FirstOrDefaultAsync(s => s.Id == request.SafqaId, cancellationToken);
 
-            if (safqa is null) {
-                throw new ArgumentException("Safqa Not Found");
-            }
+        if (safqa is null)
+            throw new KeyNotFoundException("Safqa was not found.");
 
-            if(currentUserId != safqa.PublisherId)
-            {
-                throw new Exception("User Does Not Own the Safqa!.");
-            }
+        if (safqa.PublisherId != currentUserService.UserId)
+            throw new UnauthorizedAccessException("You do not own this Safqa.");
 
-            var mediaId = Guid.NewGuid();
-            var key = $"safqa/{safqa.Id}/{mediaId}/original{Path.GetExtension(request.FileName)}";
+        var extension = Path.GetExtension(request.FileName);
 
-            var url = await fileStorageService.GenerateUploadUrlAsync(request.FileName, request.ContentType, cancellationToken);
+        var mediaId = Guid.NewGuid();
 
-            var safqaMedia = appDbContext.SafqatMedia.Add(new SafqaMedia(
-                safqa.Id,
-                 key,
-                MediaType.Image
-            ));
+        var key = $"safqa/{safqa.Id}/{mediaId}/original{extension}";
 
-            await appDbContext.SaveChangesAsync(cancellationToken);
+        var mediaType = request.ContentType.StartsWith("image/", StringComparison.OrdinalIgnoreCase)
+            ? MediaType.Image
+            : MediaType.Video;
 
-            return safqaMedia;
-        }
+        var media = new SafqaMedia(
+            safqa.Id,
+            key,
+            mediaType);
+
+        await appDbContext.SafqatMedia.AddAsync(media, cancellationToken);
+
+        await appDbContext.SaveChangesAsync(cancellationToken);
+
+        var uploadResult = await fileStorageService.GenerateUploadUrlAsync(
+            key,
+            request.ContentType,
+            cancellationToken);
+
+        return new PresignedUploadResult(
+            media.Id,
+            uploadResult.Url,
+            uploadResult.ExpiresAt,
+            key);
     }
 }
