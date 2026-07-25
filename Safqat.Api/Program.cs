@@ -1,4 +1,5 @@
 using Microsoft.OpenApi;
+using Safqat.Api.Middlewares;
 using Safqat.Application;
 using Safqat.Infrastructure;
 
@@ -38,9 +39,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.MapControllers();
 
