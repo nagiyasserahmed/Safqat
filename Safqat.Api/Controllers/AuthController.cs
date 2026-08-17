@@ -1,10 +1,13 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Safqat.Application.Auth.Commands.ConfirmPasswordReset;
 using Safqat.Application.Auth.Commands.Login;
 using Safqat.Application.Auth.Commands.Logout;
+using Safqat.Application.Auth.Commands.PasswordReset;
 using Safqat.Application.Auth.Commands.RefreshToken;
 using Safqat.Application.Auth.Commands.Register;
+using Safqat.Application.Auth.Commands.VerifyPasswordResetCode;
 using Safqat.Application.Auth.DTOs;
+using MediatR;
 
 namespace Safqat.Api.Controllers
 {
@@ -57,6 +60,33 @@ namespace Safqat.Api.Controllers
         {
             await mediator.Send(command, cancellationToken);
             return NoContent();
+        }
+
+        [HttpPost("password-reset")]
+        public async Task<IActionResult> PasswordReset(
+            [FromBody] PasswordResetCommand command,
+            CancellationToken cancellationToken)
+        {
+            var result = await mediator.Send(command, cancellationToken);
+            return Ok(result);
+        }
+
+        [HttpPost("verify-password-reset-code")]
+        public async Task<IActionResult> VerifyPasswordResetCode(
+            [FromBody] VerifyPasswordResetCodeCommand command,
+            CancellationToken cancellationToken)
+        {
+            var result = await mediator.Send(command, cancellationToken);
+            return Ok(result);
+        }
+
+        [HttpPost("confirm-password-reset")]
+        public async Task<IActionResult> ConfirmPasswordReset(
+            [FromBody] ConfirmPasswordResetCommand command,
+            CancellationToken cancellationToken)
+        {
+            var result = await mediator.Send(command, cancellationToken);
+            return Ok(result);
         }
     }
 }

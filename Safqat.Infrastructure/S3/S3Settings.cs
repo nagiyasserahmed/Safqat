@@ -6,6 +6,7 @@ namespace Safqat.Infrastructure.S3
 {
     public class S3Settings
     {
+        public static string SectionName => "AWS:S3";
         public string BucketName { get; set; } = string.Empty;
         public int PresignedUrlExpirationMinutes { get; set; } = 15;
     }

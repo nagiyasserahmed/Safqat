@@ -13,6 +13,8 @@ namespace Safqat.Infrastructure.Data
 
         public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
 
+        public DbSet<PasswordResetCode> PasswordResetCodes => Set<PasswordResetCode>();
+
         public DbSet<Category> Categories => Set<Category>();
 
         public DbSet<SafqaMedia> SafqatMedia => throw new NotImplementedException();

@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using Safqat.Application.Auth.Interfaces;
 using Safqat.Application.Common.Interfaces;
 using Safqat.Infrastructure.Data;
+using Safqat.Infrastructure.Email;
 using Safqat.Infrastructure.Identity;
 using Safqat.Infrastructure.S3;
 using System.Text;
@@ -24,7 +25,8 @@ namespace Safqat.Infrastructure
                 .Validate(s => s.Secret.Length >= 32, "JWT Secret must be at least 32 characters.")
                 .ValidateOnStart();
 
-            services.Configure<S3Settings>(configuration.GetSection("AWS:S3"));
+            services.Configure<S3Settings>(configuration.GetSection(S3Settings.SectionName));
+            services.Configure<EmailSettings>(configuration.GetSection(EmailSettings.SectionName));
 
             services.AddSingleton<IAmazonS3>(_ =>
             {
@@ -68,7 +70,7 @@ namespace Safqat.Infrastructure
 
                         ClockSkew = TimeSpan.Zero
                     };
-    });
+                });
 
             services.AddScoped<IAppDbContext, AppDbContext>();
 
@@ -79,6 +81,8 @@ namespace Safqat.Infrastructure
             services.AddScoped<ICurrentUserService, CurrentUserService>();
 
             services.AddScoped<IPasswordHasher, PasswordHasher>();
+
+            services.AddTransient<IEmailService, EmailService>();
 
             return services;
         }

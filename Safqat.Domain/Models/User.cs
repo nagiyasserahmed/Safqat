@@ -53,5 +53,16 @@ namespace Safqat.Domain.Models
             CreatedAt = DateTime.UtcNow;
             UpdatedAt = DateTime.UtcNow;
         }
+
+        public void UpdatePassword(string newPasswordHash)
+        {
+            if (string.IsNullOrWhiteSpace(newPasswordHash))
+            {
+                throw new ArgumentException("Password hash cannot be null or empty.", nameof(newPasswordHash));
+            }
+
+            PasswordHash = newPasswordHash;
+            UpdatedAt = DateTime.UtcNow;
+        }
     }
 }

@@ -11,6 +11,7 @@ namespace Safqat.Application.Common.Interfaces
         DbSet<Category> Categories { get; }
         DbSet<SafqaMedia> SafqatMedia { get; }
         DbSet<RefreshToken> RefreshTokens { get; }
+        DbSet<PasswordResetCode> PasswordResetCodes { get; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 
