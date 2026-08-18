@@ -23,8 +23,6 @@ namespace Safqat.Domain.Models
         public Category? Category { get; set; }
         public ICollection<SafqaMedia> Media { get; set; } = new List<SafqaMedia>();
 
-        // Draft created immediately when the user starts a listing —
-        // no title/price required yet
         public static Safqa CreateDraft(Guid id ,Guid publisherId, Guid categoryId)
         {
             return new Safqa

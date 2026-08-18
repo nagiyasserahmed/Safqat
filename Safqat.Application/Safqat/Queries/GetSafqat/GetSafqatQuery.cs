@@ -1,7 +1,19 @@
 ﻿using MediatR;
-using Safqat.Domain.Models;
 
 namespace Safqat.Application.Safqat.Queries.GetSafqat
 {
-    public sealed record GetSafqatQuery : IRequest<List<Safqa>>;
+    public record GetSafqasQuery(GetSafqasFilterDto Filter) : IRequest<PagedResult<SafqaDto>>;
+
+    public record SafqaDto(
+        Guid Id,
+        string Title,
+        string Description,
+        string Address,
+        decimal Price,
+        bool IsNegotiable,
+        DateTime? PublishedAt,
+        Guid CategoryId
+    );
+
+    public record PagedResult<T>(List<T> Items, int TotalCount, int PageNumber, int PageSize);
 }

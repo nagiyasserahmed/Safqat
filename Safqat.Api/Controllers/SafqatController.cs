@@ -6,6 +6,7 @@ using Safqat.Application.Safqat.Commands.CreateDraftSafqa;
 using Safqat.Application.Safqat.Commands.PresignMedia;
 using Safqat.Application.Safqat.Commands.PublishSafqa;
 using Safqat.Application.Safqat.Commands.UpdateDraftSafqa;
+using Safqat.Application.Safqat.Queries.GetSafqat;
 
 namespace Safqat.Api.Controllers
 {
@@ -50,6 +51,13 @@ namespace Safqat.Api.Controllers
         {
             await mediator.Send(command);
             return NoContent();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetSafqat([FromQuery] GetSafqasFilterDto filter)
+        {
+            var result = await mediator.Send(new GetSafqasQuery(filter));
+            return Ok(result);
         }
     }
 }
