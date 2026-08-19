@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Safqat.Application.Safqat.Commands.ConfirmMedia;
 using Safqat.Application.Safqat.Commands.CreateDraftSafqa;
+using Safqat.Application.Safqat.Commands.DeleteMedia;
+using Safqat.Application.Safqat.Commands.DeleteSafqa;
 using Safqat.Application.Safqat.Commands.PresignMedia;
 using Safqat.Application.Safqat.Commands.PublishSafqa;
 using Safqat.Application.Safqat.Commands.UpdateDraftSafqa;
@@ -43,6 +45,20 @@ namespace Safqat.Api.Controllers
         public async Task<IActionResult> ConfirmMedia([FromBody] ConfirmMediaCommand command)
         {
             await mediator.Send(command);
+            return NoContent();
+        }
+
+        [HttpDelete("media/{mediaId}")]
+        public async Task<IActionResult> DeleteMedia(Guid mediaId)
+        {
+            await mediator.Send(new DeleteMediaCommand(mediaId));
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteSafqa(Guid id)
+        {
+            await mediator.Send(new DeleteSafqaCommand(id));
             return NoContent();
         }
 
